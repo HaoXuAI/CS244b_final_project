@@ -1,0 +1,4 @@
+# intellij Clion
+.idea/
+cmake-build-debug/
+BFTlib/
