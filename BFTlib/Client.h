@@ -1,0 +1,8 @@
+//
+// Created by Hao Xu on 11/10/17.
+//
+
+#ifndef CS244B_FINAL_PROJECT_CLIENT_H
+#define CS244B_FINAL_PROJECT_CLIENT_H
+
+#endif //CS244B_FINAL_PROJECT_CLIENT_H
