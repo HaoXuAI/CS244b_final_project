@@ -2,7 +2,17 @@
 // Created by Hao Xu on 11/10/17.
 //
 
-#ifndef CS244B_FINAL_PROJECT_CLIENT_H
-#define CS244B_FINAL_PROJECT_CLIENT_H
+class Client {
+public:
+    Client();
 
-#endif //CS244B_FINAL_PROJECT_CLIENT_H
+    // send a request (<REQUEST, o, t, c>Cc message) to the primary
+    bool send_request(Request *request);
+
+    // receive the reply (<REPLY, v, t, c, i, r>Cc) from replica
+    Reply *receive_reply();
+
+    // broadcast requests to all replicas if the client does not receive replies soon enough
+    void broadcast();
+
+};
