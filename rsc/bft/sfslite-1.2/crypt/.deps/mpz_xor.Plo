@@ -1,0 +1,5 @@
+mpz_xor.lo: mpz_xor.C /usr/include/stdc-predef.h ../config.h
+
+/usr/include/stdc-predef.h:
+
+../config.h:
