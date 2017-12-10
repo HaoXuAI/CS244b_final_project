@@ -73,3 +73,278 @@ libbyz.a: objs
 	$(RANLIB) $@
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
+
+Client.o: th_assert.h fail.h Client.h types.h Node.h Principal.h Time.h
+Client.o: Cycle_counter.h umac.h ITimer.h Array.h Statistics.h Certificate.h
+Client.o: parameters.h Bitmap.h bits.h Message.h Message_tags.h
+Client.o: Log_allocator.h Reply.h Digest.h Request.h
+Replica.o: th_assert.h fail.h Message_tags.h ITimer.h Array.h types.h Time.h
+Replica.o: Cycle_counter.h Request.h Message.h Log_allocator.h Digest.h
+Replica.o: Pre_prepare.h Prepare.h Commit.h Checkpoint.h New_key.h
+Replica.o: Principal.h umac.h Status.h Bitmap.h bits.h parameters.h Fetch.h
+Replica.o: State_defs.h Data.h Partition.h libbyz.h Modify.h Meta_data.h
+Replica.o: Meta_data_d.h View_change.h View_change_ack.h New_view.h Node.h
+Replica.o: Statistics.h Prepared_cert.h Certificate.h Pre_prepare_info.h
+Replica.o: Reply.h Query_stable.h Reply_stable.h K_max.h Replica.h
+Replica.o: Req_queue.h Log.h Set.h View_info.h NV_info.h Rep_info.h
+Replica.o: Stable_estimator.h State.h Big_req_table.h map.h basic.h
+Replica.o: generator.h bhash.h buckets.h Certificate.t Log.t Set.t
+New_key.o: th_assert.h fail.h Message_tags.h New_key.h types.h Digest.h
+New_key.o: Message.h Log_allocator.h Principal.h Time.h Cycle_counter.h
+New_key.o: umac.h Node.h ITimer.h Array.h Statistics.h
+Commit.o: th_assert.h fail.h Message_tags.h Commit.h types.h Message.h
+Commit.o: Log_allocator.h Node.h Principal.h Time.h Cycle_counter.h umac.h
+Commit.o: ITimer.h Array.h Statistics.h Replica.h State_defs.h Req_queue.h
+Commit.o: Log.h parameters.h Set.h Certificate.h Bitmap.h bits.h
+Commit.o: Prepared_cert.h Prepare.h Digest.h Pre_prepare.h Pre_prepare_info.h
+Commit.o: View_info.h NV_info.h Rep_info.h Reply.h Stable_estimator.h
+Commit.o: Partition.h libbyz.h Modify.h State.h Big_req_table.h map.h basic.h
+Commit.o: generator.h bhash.h buckets.h
+Message.o: th_assert.h fail.h Message.h types.h Message_tags.h
+Message.o: Log_allocator.h Node.h Principal.h Time.h Cycle_counter.h umac.h
+Message.o: ITimer.h Array.h Statistics.h
+Reply.o: th_assert.h fail.h Message_tags.h Reply.h types.h Message.h
+Reply.o: Log_allocator.h Digest.h Node.h Principal.h Time.h Cycle_counter.h
+Reply.o: umac.h ITimer.h Array.h Statistics.h
+Digest.o: Digest.h Statistics.h types.h Array.h th_assert.h fail.h
+Digest.o: Cycle_counter.h MD5.h
+Node.o: ../sfs/include/sfslite/crypt.h ../sfs/include/sfslite/arpc.h
+Node.o: ../sfs/include/sfslite/async.h ../sfs/include/sfslite/amisc.h
+Node.o: ../sfs/include/sfslite/sysconf.h ../sfs/include/sfslite/autoconf.h
+Node.o: ../sfs/include/sfslite/err.h ../sfs/include/sfslite/str.h
+Node.o: ../sfs/include/sfslite/suio++.h ../sfs/include/sfslite/opnew.h
+Node.o: ../sfs/include/sfslite/vec.h ../sfs/include/sfslite/stllike.h
+Node.o: ../sfs/include/sfslite/array.h ../sfs/include/sfslite/msb.h
+Node.o: ../sfs/include/sfslite/callback.h ../sfs/include/sfslite/refcnt.h
+Node.o: ../sfs/include/sfslite/vatmpl.h ../sfs/include/sfslite/keyfunc.h
+Node.o: ../sfs/include/sfslite/serial.h ../sfs/include/sfslite/rwfd.h
+Node.o: ../sfs/include/sfslite/init.h ../sfs/include/sfslite/litetime.h
+Node.o: ../sfs/include/sfslite/xdrmisc.h ../sfs/include/sfslite/rpctypes.h
+Node.o: ../sfs/include/sfslite/union.h ../sfs/include/sfslite/qhash.h
+Node.o: ../sfs/include/sfslite/ihash.h ../sfs/include/sfslite/list.h
+Node.o: ../sfs/include/sfslite/axprt.h ../sfs/include/sfslite/aclnt.h
+Node.o: ../sfs/include/sfslite/backoff.h ../sfs/include/sfslite/asrv.h
+Node.o: ../sfs/include/sfslite/xhinfo.h ../sfs/include/sfslite/wmstr.h
+Node.o: ../sfs/include/sfslite/bigint.h ../sfs/include/sfslite/prng.h
+Node.o: ../sfs/include/sfslite/sha1.h ../sfs/include/sfslite/crypthash.h
+Node.o: ../sfs/include/sfslite/rabin.h ../sfs/include/sfslite/blowfish.h
+Node.o: ../sfs/include/sfslite/rsa.h ../sfs/include/sfslite/arc4.h
+Node.o: ../sfs/include/sfslite/axprt_crypt.h th_assert.h fail.h parameters.h
+Node.o: Message.h types.h Message_tags.h Log_allocator.h Time.h
+Node.o: Cycle_counter.h ITimer.h Array.h Principal.h umac.h New_key.h
+Node.o: Digest.h Node.h Statistics.h
+Request.o: th_assert.h fail.h Message_tags.h Request.h Message.h types.h
+Request.o: Log_allocator.h Digest.h Node.h Principal.h Time.h Cycle_counter.h
+Request.o: umac.h ITimer.h Array.h Statistics.h MD5.h
+Checkpoint.o: th_assert.h fail.h Message_tags.h Checkpoint.h types.h Digest.h
+Checkpoint.o: Message.h Log_allocator.h Replica.h State_defs.h Req_queue.h
+Checkpoint.o: Array.h Log.h parameters.h Set.h Certificate.h Time.h
+Checkpoint.o: Cycle_counter.h Bitmap.h bits.h Prepared_cert.h Prepare.h
+Checkpoint.o: Node.h Principal.h umac.h ITimer.h Statistics.h Pre_prepare.h
+Checkpoint.o: Pre_prepare_info.h View_info.h NV_info.h Rep_info.h Reply.h
+Checkpoint.o: Stable_estimator.h Partition.h libbyz.h Modify.h State.h
+Checkpoint.o: Big_req_table.h map.h basic.h generator.h bhash.h buckets.h
+Pre_prepare.o: th_assert.h fail.h Message_tags.h Prepare.h types.h Digest.h
+Pre_prepare.o: Message.h Log_allocator.h Pre_prepare.h Replica.h State_defs.h
+Pre_prepare.o: Req_queue.h Array.h Log.h parameters.h Set.h Certificate.h
+Pre_prepare.o: Time.h Cycle_counter.h Bitmap.h bits.h Prepared_cert.h Node.h
+Pre_prepare.o: Principal.h umac.h ITimer.h Statistics.h Pre_prepare_info.h
+Pre_prepare.o: View_info.h NV_info.h Rep_info.h Reply.h Stable_estimator.h
+Pre_prepare.o: Partition.h libbyz.h Modify.h State.h Big_req_table.h map.h
+Pre_prepare.o: basic.h generator.h bhash.h buckets.h Request.h MD5.h
+Req_queue.o: Request.h Message.h th_assert.h fail.h types.h Message_tags.h
+Req_queue.o: Log_allocator.h Digest.h Req_queue.h Array.h Pre_prepare.h
+Req_queue.o: Prepare.h Node.h Principal.h Time.h Cycle_counter.h umac.h
+Req_queue.o: ITimer.h Statistics.h Array.t
+Prepare.o: th_assert.h fail.h Message_tags.h Prepare.h types.h Digest.h
+Prepare.o: Message.h Log_allocator.h Node.h Principal.h Time.h
+Prepare.o: Cycle_counter.h umac.h ITimer.h Array.h Statistics.h Replica.h
+Prepare.o: State_defs.h Req_queue.h Log.h parameters.h Set.h Certificate.h
+Prepare.o: Bitmap.h bits.h Prepared_cert.h Pre_prepare.h Pre_prepare_info.h
+Prepare.o: View_info.h NV_info.h Rep_info.h Reply.h Stable_estimator.h
+Prepare.o: Partition.h libbyz.h Modify.h State.h Big_req_table.h map.h
+Prepare.o: basic.h generator.h bhash.h buckets.h
+Status.o: th_assert.h fail.h Message_tags.h Status.h types.h Bitmap.h bits.h
+Status.o: Message.h Log_allocator.h Pre_prepare.h Digest.h Prepare.h
+Status.o: parameters.h Node.h Principal.h Time.h Cycle_counter.h umac.h
+Status.o: ITimer.h Array.h Statistics.h
+Prepared_cert.o: Node.h types.h Principal.h Time.h Cycle_counter.h umac.h
+Prepared_cert.o: ITimer.h Array.h th_assert.h fail.h Statistics.h
+Prepared_cert.o: Prepared_cert.h parameters.h Certificate.h Bitmap.h bits.h
+Prepared_cert.o: Prepare.h Digest.h Message.h Message_tags.h Log_allocator.h
+Prepared_cert.o: Pre_prepare.h Pre_prepare_info.h Certificate.t
+ITimer.o: th_assert.h fail.h ITimer.h Array.h types.h Time.h Cycle_counter.h
+ITimer.o: Array.t
+Principal.o: Principal.h types.h Time.h Cycle_counter.h umac.h Node.h
+Principal.o: ITimer.h Array.h th_assert.h fail.h Statistics.h Reply.h
+Principal.o: Message.h Message_tags.h Log_allocator.h Digest.h
+Principal.o: ../sfs/include/sfslite/crypt.h ../sfs/include/sfslite/arpc.h
+Principal.o: ../sfs/include/sfslite/async.h ../sfs/include/sfslite/amisc.h
+Principal.o: ../sfs/include/sfslite/sysconf.h
+Principal.o: ../sfs/include/sfslite/autoconf.h ../sfs/include/sfslite/err.h
+Principal.o: ../sfs/include/sfslite/str.h ../sfs/include/sfslite/suio++.h
+Principal.o: ../sfs/include/sfslite/opnew.h ../sfs/include/sfslite/vec.h
+Principal.o: ../sfs/include/sfslite/stllike.h ../sfs/include/sfslite/array.h
+Principal.o: ../sfs/include/sfslite/msb.h ../sfs/include/sfslite/callback.h
+Principal.o: ../sfs/include/sfslite/refcnt.h ../sfs/include/sfslite/vatmpl.h
+Principal.o: ../sfs/include/sfslite/keyfunc.h ../sfs/include/sfslite/serial.h
+Principal.o: ../sfs/include/sfslite/rwfd.h ../sfs/include/sfslite/init.h
+Principal.o: ../sfs/include/sfslite/litetime.h
+Principal.o: ../sfs/include/sfslite/xdrmisc.h
+Principal.o: ../sfs/include/sfslite/rpctypes.h ../sfs/include/sfslite/union.h
+Principal.o: ../sfs/include/sfslite/qhash.h ../sfs/include/sfslite/ihash.h
+Principal.o: ../sfs/include/sfslite/list.h ../sfs/include/sfslite/axprt.h
+Principal.o: ../sfs/include/sfslite/aclnt.h ../sfs/include/sfslite/backoff.h
+Principal.o: ../sfs/include/sfslite/asrv.h ../sfs/include/sfslite/xhinfo.h
+Principal.o: ../sfs/include/sfslite/wmstr.h ../sfs/include/sfslite/bigint.h
+Principal.o: ../sfs/include/sfslite/prng.h ../sfs/include/sfslite/sha1.h
+Principal.o: ../sfs/include/sfslite/crypthash.h
+Principal.o: ../sfs/include/sfslite/rabin.h ../sfs/include/sfslite/blowfish.h
+Principal.o: ../sfs/include/sfslite/rsa.h ../sfs/include/sfslite/arc4.h
+Principal.o: ../sfs/include/sfslite/axprt_crypt.h
+Log_allocator.o: Log_allocator.h types.h th_assert.h fail.h
+Meta_data.o: th_assert.h fail.h Message_tags.h Meta_data.h types.h Digest.h
+Meta_data.o: Message.h Log_allocator.h Partition.h libbyz.h Modify.h
+Meta_data.o: State_defs.h Node.h Principal.h Time.h Cycle_counter.h umac.h
+Meta_data.o: ITimer.h Array.h Statistics.h Replica.h Req_queue.h Log.h
+Meta_data.o: parameters.h Set.h Certificate.h Bitmap.h bits.h Prepared_cert.h
+Meta_data.o: Prepare.h Pre_prepare.h Pre_prepare_info.h View_info.h NV_info.h
+Meta_data.o: Rep_info.h Reply.h Stable_estimator.h State.h Big_req_table.h
+Meta_data.o: map.h basic.h generator.h bhash.h buckets.h
+Data.o: th_assert.h fail.h Message_tags.h Data.h types.h Message.h
+Data.o: Log_allocator.h Partition.h libbyz.h Modify.h State_defs.h
+Fetch.o: th_assert.h fail.h Message_tags.h Partition.h libbyz.h types.h
+Fetch.o: Modify.h State_defs.h Fetch.h Digest.h Message.h Log_allocator.h
+Fetch.o: Node.h Principal.h Time.h Cycle_counter.h umac.h ITimer.h Array.h
+Fetch.o: Statistics.h Replica.h Req_queue.h Log.h parameters.h Set.h
+Fetch.o: Certificate.h Bitmap.h bits.h Prepared_cert.h Prepare.h
+Fetch.o: Pre_prepare.h Pre_prepare_info.h View_info.h NV_info.h Rep_info.h
+Fetch.o: Reply.h Stable_estimator.h State.h Big_req_table.h map.h basic.h
+Fetch.o: generator.h bhash.h buckets.h
+Meta_data_cert.o: Meta_data_cert.h types.h Digest.h parameters.h
+Meta_data_cert.o: Meta_data_d.h Message.h th_assert.h fail.h Message_tags.h
+Meta_data_cert.o: Log_allocator.h Node.h Principal.h Time.h Cycle_counter.h
+Meta_data_cert.o: umac.h ITimer.h Array.h Statistics.h K_max.h
+State.o: th_assert.h fail.h State.h types.h Digest.h Bitmap.h bits.h
+State.o: Partition.h libbyz.h Modify.h State_defs.h Log.h parameters.h Time.h
+State.o: Cycle_counter.h Replica.h Req_queue.h Array.h Set.h Certificate.h
+State.o: Prepared_cert.h Prepare.h Message.h Message_tags.h Log_allocator.h
+State.o: Node.h Principal.h umac.h ITimer.h Statistics.h Pre_prepare.h
+State.o: Pre_prepare_info.h View_info.h NV_info.h Rep_info.h Reply.h
+State.o: Stable_estimator.h Big_req_table.h map.h basic.h generator.h bhash.h
+State.o: buckets.h Fetch.h Data.h Meta_data.h Meta_data_d.h Meta_data_cert.h
+State.o: MD5.h valuekey.h Array.t Log.t bhash.t buckets.t
+libbyz.o: libbyz.h types.h Modify.h State_defs.h Request.h Message.h
+libbyz.o: th_assert.h fail.h Message_tags.h Log_allocator.h Digest.h Reply.h
+libbyz.o: Client.h Node.h Principal.h Time.h Cycle_counter.h umac.h ITimer.h
+libbyz.o: Array.h Statistics.h Certificate.h parameters.h Bitmap.h bits.h
+libbyz.o: Replica.h Req_queue.h Log.h Set.h Prepared_cert.h Prepare.h
+libbyz.o: Pre_prepare.h Pre_prepare_info.h View_info.h NV_info.h Rep_info.h
+libbyz.o: Stable_estimator.h Partition.h State.h Big_req_table.h map.h
+libbyz.o: basic.h generator.h bhash.h buckets.h
+View_change.o: th_assert.h fail.h Message_tags.h View_change.h parameters.h
+View_change.o: types.h bits.h Digest.h Principal.h Time.h Cycle_counter.h
+View_change.o: umac.h Message.h Log_allocator.h Replica.h State_defs.h
+View_change.o: Req_queue.h Array.h Log.h Set.h Certificate.h Bitmap.h
+View_change.o: Prepared_cert.h Prepare.h Node.h ITimer.h Statistics.h
+View_change.o: Pre_prepare.h Pre_prepare_info.h View_info.h NV_info.h
+View_change.o: Rep_info.h Reply.h Stable_estimator.h Partition.h libbyz.h
+View_change.o: Modify.h State.h Big_req_table.h map.h basic.h generator.h
+View_change.o: bhash.h buckets.h
+New_view.o: th_assert.h fail.h Message_tags.h New_view.h types.h Digest.h
+New_view.o: Message.h Log_allocator.h Node.h Principal.h Time.h
+New_view.o: Cycle_counter.h umac.h ITimer.h Array.h Statistics.h Replica.h
+New_view.o: State_defs.h Req_queue.h Log.h parameters.h Set.h Certificate.h
+New_view.o: Bitmap.h bits.h Prepared_cert.h Prepare.h Pre_prepare.h
+New_view.o: Pre_prepare_info.h View_info.h NV_info.h Rep_info.h Reply.h
+New_view.o: Stable_estimator.h Partition.h libbyz.h Modify.h State.h
+New_view.o: Big_req_table.h map.h basic.h generator.h bhash.h buckets.h
+View_change_ack.o: th_assert.h fail.h Message_tags.h View_change_ack.h
+View_change_ack.o: types.h Digest.h Message.h Log_allocator.h Node.h
+View_change_ack.o: Principal.h Time.h Cycle_counter.h umac.h ITimer.h Array.h
+View_change_ack.o: Statistics.h
+View_info.o: View_info.h Array.h th_assert.h fail.h types.h Digest.h Node.h
+View_info.o: Principal.h Time.h Cycle_counter.h umac.h ITimer.h Statistics.h
+View_info.o: NV_info.h Bitmap.h bits.h parameters.h Pre_prepare_info.h
+View_info.o: Pre_prepare.h Prepare.h Message.h Message_tags.h Log_allocator.h
+View_info.o: Log.h View_change.h View_change_ack.h New_view.h State.h
+View_info.o: Partition.h libbyz.h Modify.h State_defs.h Status.h Replica.h
+View_info.o: Req_queue.h Set.h Certificate.h Prepared_cert.h Rep_info.h
+View_info.o: Reply.h Stable_estimator.h Big_req_table.h map.h basic.h
+View_info.o: generator.h bhash.h buckets.h K_max.h Log.t Array.t
+NV_info.o: NV_info.h Bitmap.h bits.h th_assert.h fail.h parameters.h types.h
+NV_info.o: Time.h Cycle_counter.h Digest.h Pre_prepare_info.h Pre_prepare.h
+NV_info.o: Prepare.h Message.h Message_tags.h Log_allocator.h Array.h
+NV_info.o: Replica.h State_defs.h Req_queue.h Log.h Set.h Certificate.h
+NV_info.o: Prepared_cert.h Node.h Principal.h umac.h ITimer.h Statistics.h
+NV_info.o: View_info.h Rep_info.h Reply.h Stable_estimator.h Partition.h
+NV_info.o: libbyz.h Modify.h State.h Big_req_table.h map.h basic.h
+NV_info.o: generator.h bhash.h buckets.h View_change.h View_change_ack.h
+NV_info.o: New_view.h Status.h Array.t K_max.h
+Rep_info.o: Rep_info.h types.h Time.h Cycle_counter.h Digest.h Array.h
+Rep_info.o: th_assert.h fail.h Reply.h Message.h Message_tags.h
+Rep_info.o: Log_allocator.h State_defs.h Replica.h Req_queue.h Log.h
+Rep_info.o: parameters.h Set.h Certificate.h Bitmap.h bits.h Prepared_cert.h
+Rep_info.o: Prepare.h Node.h Principal.h umac.h ITimer.h Statistics.h
+Rep_info.o: Pre_prepare.h Pre_prepare_info.h View_info.h NV_info.h
+Rep_info.o: Stable_estimator.h Partition.h libbyz.h Modify.h State.h
+Rep_info.o: Big_req_table.h map.h basic.h generator.h bhash.h buckets.h
+Rep_info.o: Array.t
+Meta_data_d.o: th_assert.h fail.h Message_tags.h Meta_data_d.h parameters.h
+Meta_data_d.o: types.h Digest.h Message.h Log_allocator.h Partition.h
+Meta_data_d.o: libbyz.h Modify.h State_defs.h Node.h Principal.h Time.h
+Meta_data_d.o: Cycle_counter.h umac.h ITimer.h Array.h Statistics.h Replica.h
+Meta_data_d.o: Req_queue.h Log.h Set.h Certificate.h Bitmap.h bits.h
+Meta_data_d.o: Prepared_cert.h Prepare.h Pre_prepare.h Pre_prepare_info.h
+Meta_data_d.o: View_info.h NV_info.h Rep_info.h Reply.h Stable_estimator.h
+Meta_data_d.o: State.h Big_req_table.h map.h basic.h generator.h bhash.h
+Meta_data_d.o: buckets.h
+Query_stable.o: th_assert.h fail.h Message_tags.h Query_stable.h types.h
+Query_stable.o: Message.h Log_allocator.h Principal.h Time.h Cycle_counter.h
+Query_stable.o: umac.h Replica.h State_defs.h Req_queue.h Array.h Log.h
+Query_stable.o: parameters.h Set.h Certificate.h Bitmap.h bits.h
+Query_stable.o: Prepared_cert.h Prepare.h Digest.h Node.h ITimer.h
+Query_stable.o: Statistics.h Pre_prepare.h Pre_prepare_info.h View_info.h
+Query_stable.o: NV_info.h Rep_info.h Reply.h Stable_estimator.h Partition.h
+Query_stable.o: libbyz.h Modify.h State.h Big_req_table.h map.h basic.h
+Query_stable.o: generator.h bhash.h buckets.h
+Reply_stable.o: th_assert.h fail.h Message_tags.h Reply_stable.h types.h
+Reply_stable.o: Digest.h Message.h Log_allocator.h Replica.h State_defs.h
+Reply_stable.o: Req_queue.h Array.h Log.h parameters.h Set.h Certificate.h
+Reply_stable.o: Time.h Cycle_counter.h Bitmap.h bits.h Prepared_cert.h
+Reply_stable.o: Prepare.h Node.h Principal.h umac.h ITimer.h Statistics.h
+Reply_stable.o: Pre_prepare.h Pre_prepare_info.h View_info.h NV_info.h
+Reply_stable.o: Rep_info.h Reply.h Stable_estimator.h Partition.h libbyz.h
+Reply_stable.o: Modify.h State.h Big_req_table.h map.h basic.h generator.h
+Reply_stable.o: bhash.h buckets.h
+Stable_estimator.o: Replica.h State_defs.h types.h Req_queue.h Array.h
+Stable_estimator.o: th_assert.h fail.h Log.h parameters.h Set.h Certificate.h
+Stable_estimator.o: Time.h Cycle_counter.h Bitmap.h bits.h Prepared_cert.h
+Stable_estimator.o: Prepare.h Digest.h Message.h Message_tags.h
+Stable_estimator.o: Log_allocator.h Node.h Principal.h umac.h ITimer.h
+Stable_estimator.o: Statistics.h Pre_prepare.h Pre_prepare_info.h View_info.h
+Stable_estimator.o: NV_info.h Rep_info.h Reply.h Stable_estimator.h
+Stable_estimator.o: Partition.h libbyz.h Modify.h State.h Big_req_table.h
+Stable_estimator.o: map.h basic.h generator.h bhash.h buckets.h
+Stable_estimator.o: Reply_stable.h K_max.h
+Statistics.o: th_assert.h fail.h Statistics.h types.h Array.h Cycle_counter.h
+Statistics.o: Timer.h Time.h Array.t
+Time.o: Time.h Cycle_counter.h
+Big_req_table.o: Request.h Message.h th_assert.h fail.h types.h
+Big_req_table.o: Message_tags.h Log_allocator.h Digest.h Pre_prepare.h
+Big_req_table.o: Prepare.h Big_req_table.h Array.h map.h basic.h generator.h
+Big_req_table.o: bhash.h buckets.h Replica.h State_defs.h Req_queue.h Log.h
+Big_req_table.o: parameters.h Set.h Certificate.h Time.h Cycle_counter.h
+Big_req_table.o: Bitmap.h bits.h Prepared_cert.h Node.h Principal.h umac.h
+Big_req_table.o: ITimer.h Statistics.h Pre_prepare_info.h View_info.h
+Big_req_table.o: NV_info.h Rep_info.h Reply.h Stable_estimator.h Partition.h
+Big_req_table.o: libbyz.h Modify.h State.h Array.t bhash.t buckets.t
+Pre_prepare_info.o: Pre_prepare.h types.h Digest.h Prepare.h Message.h
+Pre_prepare_info.o: th_assert.h fail.h Message_tags.h Log_allocator.h
+Pre_prepare_info.o: Pre_prepare_info.h Replica.h State_defs.h Req_queue.h
+Pre_prepare_info.o: Array.h Log.h parameters.h Set.h Certificate.h Time.h
+Pre_prepare_info.o: Cycle_counter.h Bitmap.h bits.h Prepared_cert.h Node.h
+Pre_prepare_info.o: Principal.h umac.h ITimer.h Statistics.h View_info.h
+Pre_prepare_info.o: NV_info.h Rep_info.h Reply.h Stable_estimator.h
+Pre_prepare_info.o: Partition.h libbyz.h Modify.h State.h Big_req_table.h
+Pre_prepare_info.o: map.h basic.h generator.h bhash.h buckets.h

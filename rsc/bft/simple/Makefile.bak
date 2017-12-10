@@ -11,7 +11,7 @@ CPPFLAGS:= $(INCS) -ggdb -Wall
 C:=gcc
 CFLAGS:= $(CPPFLAGS)
 LIBDIRS:=-L../gmp -L../libbyz -L../sfs/lib/sfslite
-LIBS:=-lbyz -lsfscrypt -lasync -lgmpxx -lgmp -static
+LIBS:=-lbyz -lsfscrypt -lasync -static -lgmp
 
 %.o:: %.cc
 	$(CC) $(CPPFLAGS) -o $@ -c $<
