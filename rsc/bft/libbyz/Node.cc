@@ -415,7 +415,7 @@ Request_id Node::new_rid() {
 void Node::new_tstamp() {
   struct timeval t;
   gettimeofday(&t, 0);
-  th_assert(sizeof(t.tv_sec) <= sizeof(int), "tv_sec is too big");
+  //th_assert(sizeof(t.tv_sec) <= sizeof(int), "tv_sec is too big");
   Long tstamp = t.tv_sec;
   long int_bits = sizeof(int)*8;
   cur_rid = tstamp << int_bits; 
