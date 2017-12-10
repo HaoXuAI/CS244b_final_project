@@ -51,7 +51,7 @@
 #define HAVE_CMSGHDR 1
 
 /* Define if you have SYSV-style /dev/ptmx and /dev/pts/. */
-/* #undef HAVE_DEV_PTMX */
+#define HAVE_DEV_PTMX 1
 
 /* Define if you have /dev/pts and /dev/ptc devices (as in AIX). */
 /* #undef HAVE_DEV_PTS_AND_PTC */

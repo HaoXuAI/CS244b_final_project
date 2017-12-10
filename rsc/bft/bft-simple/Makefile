@@ -127,3 +127,15 @@ thr_client_udp: $(LIBBYZ) thr_client_udp.cc
 	$(CC) -o thr_client_udp $(CPPFLAGS) $(LIBDIRS) thr_client_udp.cc $(LIBS)
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
+
+replica_main.o: ../libbyz/th_assert.h ../libbyz/fail.h ../libbyz/libbyz.h
+replica_main.o: ../libbyz/types.h ../libbyz/Modify.h ../libbyz/State_defs.h
+replica_main.o: ../libbyz/Statistics.h ../libbyz/Array.h
+replica_main.o: ../libbyz/Cycle_counter.h ../libbyz/Timer.h simple.h
+simple_client.o: ../libbyz/th_assert.h ../libbyz/fail.h ../libbyz/types.h
+simple_client.o: ../libbyz/Timer.h
+client_main.o: ../libbyz/th_assert.h ../libbyz/fail.h ../libbyz/Timer.h
+client_main.o: ../libbyz/libbyz.h ../libbyz/types.h ../libbyz/Modify.h
+client_main.o: ../libbyz/State_defs.h ../libbyz/Statistics.h
+client_main.o: ../libbyz/Array.h ../libbyz/Cycle_counter.h simple.h
+simple_server.o: ../libbyz/th_assert.h ../libbyz/fail.h ../libbyz/Timer.h

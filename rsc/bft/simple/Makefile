@@ -5,13 +5,13 @@ AR:=ar
 RANLIB:=ranlib
 MAKEDEPEND:=makedepend -Y
 LIBBYZ:=../libbyz/libbyz.a
-INCS:=-I../gmp -I../libbyz -I../sfs/include/sfs 
+INCS:=-I../gmp -I../libbyz -I../sfs/include/sfslite 
 CPPFLAGS:= $(INCS) -ggdb -Wall  
 #CPPFLAGS:= $(INCS) -O3 -march=pentiumpro -fno-exceptions -DNDEBUG 
 C:=gcc
 CFLAGS:= $(CPPFLAGS)
 LIBDIRS:=-L../gmp -L../libbyz -L../sfs/lib/sfslite
-LIBS:=-lgmp -lbyz -lsfscrypt -lasync -static
+LIBS:=-lbyz -lsfscrypt -lasync -lgmp
 
 %.o:: %.cc
 	$(CC) $(CPPFLAGS) -o $@ -c $<

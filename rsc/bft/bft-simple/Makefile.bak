@@ -10,8 +10,8 @@ INCS:=-I../gmp -I../libbyz -I../sfs/include/sfslite
 CPPFLAGS:= $(INCS) -O3  -fno-exceptions -DNDEBUG 
 C:=gcc
 CFLAGS:= $(CPPFLAGS)
-LIBDIRS:=-L../gmp -L../libbyz -L../sfs/lib/sfslite #-L../sfs/async -L../sfs/crypt 
-LIBS:=-lbyz -lsfscrypt -lasync -lgmp
+LIBDIRS:=-L../gmp -L../libbyz -L../sfs/lib/sfslite -L../sfs/async -L../sfs/crypt 
+LIBS:=-lgmp -lbyz -lsfscrypt -lasync
 
 %.o:: %.cc
 	$(CC) $(CPPFLAGS) -o $@ -c $<
