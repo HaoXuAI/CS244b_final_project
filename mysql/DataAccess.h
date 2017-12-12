@@ -2,7 +2,7 @@
 
 //#include "stdafx.h"
 #include <string>
-#include <winsock.h>
+//#include <winsock.h>
 #include "mysql.h"
 #include <thread>
 #include <mutex>
@@ -23,9 +23,9 @@ private:
 	static std::mutex m_mGuard;
 
 protected:
-	BOOL m_bIsConnect;
+	bool m_bIsConnect;
 public:
-	BOOL ConnectDB(const std::string &strHost, const int nPort, const std::string &strDBName, const std::string& strUserName, const std::string &strPassword);
-	BOOL ExecuteQuery( std::string &strSQL );
+	bool ConnectDB(const std::string &strHost, const int nPort, const std::string &strDBName, const std::string& strUserName, const std::string &strPassword);
+	bool ExecuteQuery( std::string &strSQL );
 };
 
