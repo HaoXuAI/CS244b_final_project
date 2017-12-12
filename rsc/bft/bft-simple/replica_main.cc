@@ -29,7 +29,7 @@ static void dump_profile(int sig) {
 
 // Service specific functions.
 int exec_command(Byz_req *inb, Byz_rep *outb, Byz_buffer *non_det, int client, bool ro) {
-
+  cerr << "incoming request: " << inb->contents << "\n";
   if(exec_count++ == max_exec_count) {
     cerr << "starting timing at " << max_exec_count << " ops\n";
     t.start();
