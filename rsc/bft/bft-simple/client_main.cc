@@ -3,6 +3,8 @@
 #include <string.h>
 #include <sys/param.h>
 #include <unistd.h>
+#include <vector>
+#include <string>
 
 #include "th_assert.h"
 #include "Timer.h"
@@ -11,8 +13,12 @@
 #include "Statistics.h"
 
 #include "simple.h"
+#include "../libbyz/libbyz.h"
 
 int main(int argc, char **argv) {
+  std::string READ_REQUEST = "SELECT * FROM TABLE WHERE ID = 123";
+  std::string WRITE_REQUEST = "INSERT";
+
   char config[PATH_MAX];
   char config_priv[PATH_MAX];
   config[0] = config_priv[0] = 0;
@@ -86,34 +92,49 @@ int main(int argc, char **argv) {
   // Loop invoking requests:
   //
 
-  // Allocate request
-  Byz_req req;
-  Byz_alloc_request(&req, Simple_size);
-  th_assert(Simple_size <= req.size, "Request too big");
-
-  // Store data into request
-  for (int i=0; i < Simple_size; i++) {
-    req.contents[i] = option;
-  }
-
-  if (option != 2) {
-    req.size = 8;
+  // Allocate requests
+  std::vector<Byz_req> requests;
+  if (option == 1 || read_only) {
+    // read or read_only, send read only requests
+    Byz_req req;
+    Byz_alloc_request(&req, Simple_size);
+    th_assert(Simple_size <= req.size, "Request too big");
+    strcpy(req.contents, READ_REQUEST.c_str());
+    requests.push_back(req);
   } else {
-    req.size = Simple_size;
+    // write
+    Byz_req req1;
+    Byz_alloc_request(&req1, Simple_size);
+    th_assert(Simple_size <= req1.size, "Request too big");
+    strcpy(req1.contents, WRITE_REQUEST.c_str());
+    requests.push_back(req1);
+    // read
+    Byz_req req2;
+    Byz_alloc_request(&req2, Simple_size);
+    th_assert(Simple_size <= req2.size, "Request too big");
+    // read or read_only, send read only requests
+    strcpy(req2.contents, READ_REQUEST.c_str());
+    requests.push_back(req2);
   }
+
 
   stats.zero_stats();
 
   Timer t;
   t.start();
   Byz_rep rep;
+  int req_i = 0;
   for (int i=0; i < num_iter; i++) {
     // Invoke request
-    Byz_invoke(&req, &rep, read_only);
+    if (req_i == requests.size()) {
+      req_i = 0;
+    }
+    Byz_invoke(&requests[req_i], &rep, read_only);
+    req_i ++;
 
-    // Check reply
-    th_assert(((option == 2 || option == 0) && rep.size == 8) ||
-	    (option == 1 && rep.size == Simple_size), "Invalid reply");
+//    // Check reply
+//    th_assert(((option == 2 || option == 0) && rep.size == 8) ||
+//      (option == 1 && rep.size == Simple_size), "Invalid reply");
     
     // Free reply
     Byz_free_reply(&rep);
@@ -124,10 +145,12 @@ int main(int argc, char **argv) {
   }
   t.stop();
   printf("Elapsed time %f for %d iterations of operation %d\n", t.elapsed(), 
-	 num_iter, option);
+   num_iter, option);
 
   stats.print_stats();
 
-  Byz_free_request(&req);
+  for (int i=0; i<requests.size(); i ++) {
+    Byz_free_request(&requests[i]);
+  }
 }
   
