@@ -139,7 +139,7 @@ int main(int argc, char **argv) {
   char *mem = (char*)valloc(mem_size);
   bzero(mem, mem_size);
 
-  bool isConnect = dataAccess.ConnectDB("localhost", 3306, "bank", "root", "");
+  bool isConnect = dataAccess.ConnectDB("localhost", 3306, "bank_new", "root", "");
   if (isConnect) {
     cerr << "db ready.\n";
   } else {

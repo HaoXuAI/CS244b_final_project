@@ -64,16 +64,22 @@ bool CDataAccess::ExecuteQuery(string &strSQL)
 	}
 	size_t nReturnValue = mysql_real_query(m_pSQL, strSQL.c_str(), strSQL.length());
 	m_pSQLResultSet = mysql_store_result(m_pSQL);
-	return (0 == nReturnValue) ? true : false;
+	if (nReturnValue == 0) {
+		return true;
+	} else {
+		cout << "error code: " << nReturnValue << endl;
+		return false;
+	}
 }
 
 
-int main()
+/*int main()
 {
 	CDataAccess dataAccess;
-	bool isConnect = dataAccess.ConnectDB("13.57.32.246", 3306, "bank", "root", "123");
+	bool isConnect = dataAccess.ConnectDB("localhost", 3306, "bank_new", "root", "");
 	if (isConnect) {
-		string strQuery = "select * from account";
+		cout << "db connected." << endl;
+		string strQuery = "select * from customer_tb";
 		//deposit $100
 		//string strQuery = "update account set balance=balance-100 where CUSTOMER_NAME="Robert Dean"";
 		bool isSuccess = dataAccess.ExecuteQuery(strQuery);
@@ -93,15 +99,21 @@ int main()
 				//loop to read each line
 				int numCol = mysql_num_fields(sqlResult);
 				for (int i = 0; i < numCol; i++) {
-					string strFieldValue = pSQLRow[i];
-					cout << strFieldValue.c_str() << "\t";
+					string strFieldValue = pSQLRow[i] ? pSQLRow[i] : "NULL";
+					if ( i == 1){
+					    unsigned int lenS = 15 - strFieldValue.size();
+					    while(lenS-- > 0) strFieldValue += " ";
+					}
+					cout << strFieldValue.c_str() << "\t\t";
 				}
 				cout << endl;
 			}
 
 			dataAccess.releaseResult();
 		}
+	} else {
+		cout << "failed to connect to db." << endl;
 	}
 
 	return 0;
-}
+}*/
