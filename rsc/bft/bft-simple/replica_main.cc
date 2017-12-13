@@ -8,6 +8,7 @@
 
 #include "th_assert.h"
 #include "libbyz.h"
+#include "DataAccess.h"
 #include "Statistics.h"
 #include "Timer.h"
 
@@ -18,27 +19,56 @@ using std::cerr;
 static int exec_count = 0;
 static int max_exec_count = 10000; // how many ops to run tests for
 static Timer t;
+static CDataAccess dataAccess;
 
 static void dump_profile(int sig) {
- profil(0,0,0,0);
+  profil(0,0,0,0);
 
- stats.print_stats();
- 
- exit(0);
+  stats.print_stats();
+
+  exit(0);
 }
 
 // Service specific functions.
 int exec_command(Byz_req *inb, Byz_rep *outb, Byz_buffer *non_det, int client, bool ro) {
-  cerr << "incoming request: " << inb->contents << "\n";
-  if(exec_count++ == max_exec_count) {
-    cerr << "starting timing at " << max_exec_count << " ops\n";
-    t.start();
-  } else if(exec_count == 2*max_exec_count) {
-    cerr << "stopping execution at " << 2*max_exec_count << " ops\n";
-    t.stop();
-	cerr << "Throughput: " << max_exec_count/t.elapsed() << "\n";
-    dump_profile(0);
+  std::string strQuery = inb->contents;
+  cerr << "incoming request: " << strQuery << "\n";
+
+  bool isSuccess = dataAccess.ExecuteQuery(strQuery);
+  if (isSuccess) {
+    MYSQL_RES *sqlResult = dataAccess.getSqlResult();
+
+    //output the table field
+    MYSQL_FIELD *pSQLField = NULL;
+    while (NULL != (pSQLField = mysql_fetch_field(sqlResult))) {
+      cerr << pSQLField->name << "\t";
+    }
+    cerr << "\n";
+
+    //output each row of the table
+    MYSQL_ROW pSQLRow = NULL;
+    while (pSQLRow = mysql_fetch_row(sqlResult)) {
+      //loop to read each line
+      int numCol = mysql_num_fields(sqlResult);
+      for (int i = 0; i < numCol; i++) {
+        std::string strFieldValue = pSQLRow[i];
+        cerr << strFieldValue.c_str() << "\t";
+      }
+      cerr << "\n";
+    }
+
+    dataAccess.releaseResult();
   }
+
+//  if(exec_count++ == max_exec_count) {
+//    cerr << "starting timing at " << max_exec_count << " ops\n";
+//    t.start();
+//  } else if(exec_count == 2*max_exec_count) {
+//    cerr << "stopping execution at " << 2*max_exec_count << " ops\n";
+//    t.stop();
+//    cerr << "Throughput: " << max_exec_count/t.elapsed() << "\n";
+//    dump_profile(0);
+//  }
 
 #ifdef RETS_GRAPH
   int size = *((int*)(inb->contents));
@@ -50,12 +80,12 @@ int exec_command(Byz_req *inb, Byz_rep *outb, Byz_buffer *non_det, int client, b
   if (inb->contents[0] == 1) {
     th_assert(inb->size == 8, "Invalid request");
     bzero(outb->contents, Simple_size);
-    outb->size = Simple_size;    
+    outb->size = Simple_size;
     return 0;
   }
-  
+
   th_assert((inb->contents[0] == 2 && inb->size == Simple_size) ||
-	    (inb->contents[0] == 0 && inb->size == 8), "Invalid request");
+            (inb->contents[0] == 0 && inb->size == 8), "Invalid request");
   *((long long*)(outb->contents)) = 0;
   outb->size = 8;
   return 0;
@@ -71,20 +101,20 @@ int main(int argc, char **argv) {
   int opt;
   while ((opt = getopt(argc, argv, "c:p:")) != EOF) {
     switch (opt) {
-    case 'c':
-      strncpy(config, optarg, PATH_MAX);
-      break;
-    
-    case 'p':
-      strncpy(config_priv, optarg, PATH_MAX);
-      break;
+      case 'c':
+        strncpy(config, optarg, PATH_MAX);
+            break;
 
-    default:
-      fprintf(stderr, "%s -c config_file -p config_priv_file", argv[0]);
-      exit(-1);
+      case 'p':
+        strncpy(config_priv, optarg, PATH_MAX);
+            break;
+
+      default:
+        fprintf(stderr, "%s -c config_file -p config_priv_file", argv[0]);
+            exit(-1);
     }
   }
- 
+
   if (config[0] == 0) {
     // Try to open default file
     strcpy(config, "./config");
@@ -109,7 +139,16 @@ int main(int argc, char **argv) {
   char *mem = (char*)valloc(mem_size);
   bzero(mem, mem_size);
 
+  bool isConnect = dataAccess.ConnectDB("localhost", 3306, "bank", "root", "");
+  if (isConnect) {
+    cerr << "db ready.\n";
+  } else {
+    cerr << "db is not connected.\n";
+    exit(1);
+  }
+
   Byz_init_replica(config, config_priv, mem, mem_size, exec_command, 0, 0);
+
 
   stats.zero_stats();
 

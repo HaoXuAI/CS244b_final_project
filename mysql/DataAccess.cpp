@@ -12,7 +12,7 @@ std::mutex CDataAccess::m_mGuard;
 CDataAccess::CDataAccess() 
 	: m_pSQL(NULL),
 	  m_pSQLResultSet(NULL),
-	  m_bIsConnect(FALSE)
+	  m_bIsConnect(false)
 {
 }
 
@@ -29,11 +29,11 @@ CDataAccess::~CDataAccess()
 }
 
 //every thread call it firstly
-BOOL CDataAccess::ConnectDB(const std::string &strHost, const int nPort, const std::string &strDBName, const std::string& strUserName, const std::string &strPassword)
+bool CDataAccess::ConnectDB(const std::string &strHost, const int nPort, const std::string &strDBName, const std::string& strUserName, const std::string &strPassword)
 {
 	if (m_bIsConnect) {
 		cout << "DB has already been connected!\n";
-		return TRUE;
+		return true;
 	}
 
 	std::unique_lock<std::mutex> lck(m_mGuard);
@@ -41,40 +41,42 @@ BOOL CDataAccess::ConnectDB(const std::string &strHost, const int nPort, const s
 	mysql_library_init(0, NULL, NULL);
 	if ((m_pSQL = mysql_init(NULL)) == NULL) {
 		cout << "initialize MySql connection failed!\n";
-		return FALSE;
+		return false;
 	}
 
 	if (NULL == mysql_real_connect(m_pSQL, strHost.c_str(), strUserName.c_str(), strPassword.c_str(), strDBName.c_str(), nPort, NULL, 0)) {
 		cout << "connection with MySql failed:" << mysql_error(m_pSQL) << endl;
 		mysql_close(m_pSQL);
 		mysql_library_end();
-		return FALSE;
+		return false;
 	}
 
-	m_bIsConnect = TRUE;
+	m_bIsConnect = true;
 	return m_bIsConnect;
 }
 
 //every thread may call it multiple times
-BOOL CDataAccess::ExecuteQuery(string &strSQL)
+bool CDataAccess::ExecuteQuery(string &strSQL)
 {
 	if (!m_bIsConnect) {
 		cout << "Wrong, not connected to MySql!\n";
-		return FALSE;
+		return false;
 	}
 	size_t nReturnValue = mysql_real_query(m_pSQL, strSQL.c_str(), strSQL.length());
 	m_pSQLResultSet = mysql_store_result(m_pSQL);
-	return (0 == nReturnValue) ? TRUE : FALSE;
+	return (0 == nReturnValue) ? true : false;
 }
 
 
 int main()
 {
 	CDataAccess dataAccess;
-	BOOL isConnect = dataAccess.ConnectDB("127.0.0.1", 3306, "world", "root", "root");
+	bool isConnect = dataAccess.ConnectDB("13.57.32.246", 3306, "bank", "root", "123");
 	if (isConnect) {
-		string strQuery = "select * from city";
-		BOOL isSuccess = dataAccess.ExecuteQuery(strQuery);
+		string strQuery = "select * from account";
+		//deposit $100
+		//string strQuery = "update account set balance=balance-100 where CUSTOMER_NAME="Robert Dean"";
+		bool isSuccess = dataAccess.ExecuteQuery(strQuery);
 		if (isSuccess) {
 			MYSQL_RES* sqlResult = dataAccess.getSqlResult();
 

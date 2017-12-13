@@ -4,14 +4,15 @@ CC:=g++
 AR:=ar
 RANLIB:=ranlib
 MAKEDEPEND:=makedepend -Y
+DBLIB:=../../../mysql/DataAccess.a
 LIBBYZ:=../libbyz/libbyz.a
-INCS:=-I../gmp -I../libbyz -I../sfs/include/sfslite
+INCS:=-I../gmp -I../libbyz -I../sfs/include/sfslite -I../../../mysql
 #CPPFLAGS:= $(INCS) -ggdb -Wall  
-CPPFLAGS:= $(INCS) -O3  -fno-exceptions -DNDEBUG 
+CPPFLAGS:= $(INCS) -std=c++11  `mysql_config --cflags --libs` -O3  -fno-exceptions -DNDEBUG 
 C:=gcc
 CFLAGS:= $(CPPFLAGS)
-LIBDIRS:=-L../gmp -L../libbyz -L../sfs/lib/sfslite #-L../sfs/async -L../sfs/crypt 
-LIBS:=-lgmp -lbyz -lsfscrypt -lasync
+LIBDIRS:=-L../gmp -L../libbyz -L../sfs/lib/sfslite -L../../../mysql -L../sfs/async -L../sfs/crypt 
+LIBS:=-lgmp -lbyz -lsfscrypt -lasync -ldb
 
 %.o:: %.cc
 	$(CC) $(CPPFLAGS) -o $@ -c $<
@@ -51,7 +52,7 @@ depend:
 simple-client: $(LIBBYZ) client_main.o
 	$(CC) -o simple-client $(CPPFLAGS) $(LIBDIRS) client_main.o $(LIBS)
 
-simple-server: $(LIBBYZ) replica_main.o
+simple-server: $(DBLIB) $(LIBBYZ) replica_main.o
 	$(CC) -o simple-server $(CPPFLAGS) $(LIBDIRS) replica_main.o $(LIBS)
 
 
@@ -79,7 +80,7 @@ clientp: $(LIBBYZ) client_main.o
 	$(CC) -pg -static -o clientp $(CPPFLAGS) $(LIBDIRS) client_main.o $(LIBS) /usr/lib/libc_p.a
 
 
-serverp: $(LIBBYZ) replica_main.o
+serverp: $(DBLIB) $(LIBBYZ) replica_main.o
 	$(CC) -pg -static -o serverp $(CPPFLAGS) $(LIBDIRS) replica_main.o  $(LIBS) /usr/lib/libc_p.a
 
 # Simple benchmark with authentication
@@ -109,7 +110,7 @@ lat_graph_rets: $(LIBBYZ) lat_graph.cc
 	$(CC) -o lat_graph_rets -DRETS_GRAPH $(CPPFLAGS) $(LIBDIRS)  lat_graph.cc  $(LIBS)
 
 # Server to compute graph of latency for different return sizes
-server_rets: $(LIBBYZ) replica_main.cc
+server_rets: $(DBLIB) $(LIBBYZ) replica_main.cc
 	$(CC) -o server_rets -DRETS_GRAPH $(CPPFLAGS) $(LIBDIRS) replica_main.cc $(LIBS)
 
 # Manger and client to compute throughput graphs
