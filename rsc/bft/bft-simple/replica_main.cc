@@ -75,52 +75,35 @@ int exec_command(Byz_req *inb, Byz_rep *outb, Byz_buffer *non_det, int client, b
   if (isSuccess) {
     cerr << "execute success\n";
     if (!isRead) {
-      dataAccess.releaseResult();
-      sqlStream.str("");
-      sqlStream << "SELECT balance FROM account WHERE name='" << client_name << "'";
-      sql = sqlStream.str();
-      dataAccess.ExecuteQuery(sql);
-    }
+//      sqlStream.str("");
+//      sqlStream << "SELECT balance FROM account WHERE name='" << client_name << "'";
+//      sql = sqlStream.str();
+//      dataAccess.ExecuteQuery(sql);
+      // just return success
+      std::string res = "update success";
+      strcpy(outb->contents, res.c_str());
+      outb->size = res.size();
+    } else {
+      std::ostringstream resStream;
 
-    std::ostringstream resStream;
-
-    MYSQL_RES *sqlResult = dataAccess.getSqlResult();
-//    //output the table field
-//    MYSQL_FIELD *pSQLField = NULL;
-//    while (NULL != (pSQLField = mysql_fetch_field(sqlResult))) {
-//      cerr << pSQLField->name << "\t";
-//    }
-//    cerr << "\n";
-
-    //output each row of the table
-//    MYSQL_ROW pSQLRow = NULL;
-//    while (pSQLRow = mysql_fetch_row(sqlResult)) {
-//      //loop to read each line
-//      int numCol = mysql_num_fields(sqlResult);
-//      for (int i = 0; i < numCol; i++) {
-//        std::string strFieldValue = pSQLRow[i];
-//        cerr << strFieldValue.c_str() << "\t";
-//      }
-//      cerr << "\n";
-//    }
-
-    MYSQL_ROW pSQLRow = NULL;
-    while (pSQLRow = mysql_fetch_row(sqlResult)) {
-      //loop to read each line
-      int numCol = mysql_num_fields(sqlResult);
-      for (int i = 0; i < numCol; i++) {
-        std::string strFieldValue = pSQLRow[i];
-        cerr << strFieldValue.c_str() << "\t";
-        resStream << strFieldValue.c_str() << "\t";
+      MYSQL_RES *sqlResult = dataAccess.getSqlResult();
+      MYSQL_ROW pSQLRow = NULL;
+      while (pSQLRow = mysql_fetch_row(sqlResult)) {
+        //loop to read each line
+        int numCol = mysql_num_fields(sqlResult);
+        for (int i = 0; i < numCol; i++) {
+          std::string strFieldValue = pSQLRow[i];
+          cerr << strFieldValue.c_str() << "\t";
+          resStream << strFieldValue.c_str() << "\t";
+        }
+        cerr << "\n";
+        resStream << "\n";
       }
-      cerr << "\n";
-      resStream << "\n";
+      std::string res = resStream.str();
+      strcpy(outb->contents, res.c_str());
+      outb->size = res.size();
     }
-
     dataAccess.releaseResult();
-    std::string res = resStream.str();
-    strcpy(outb->contents, res.c_str());
-    outb->size = res.size();
   }
   return 0;
 
