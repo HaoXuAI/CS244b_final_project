@@ -5,6 +5,9 @@
 #include <sys/param.h>
 #include <unistd.h>
 #include <iostream>
+#include <sstream>
+
+#include <vector>
 
 #include "th_assert.h"
 #include "libbyz.h"
@@ -13,6 +16,7 @@
 #include "Timer.h"
 
 #include "simple.h"
+#include "../libbyz/libbyz.h"
 
 using std::cerr;
 
@@ -34,18 +38,72 @@ int exec_command(Byz_req *inb, Byz_rep *outb, Byz_buffer *non_det, int client, b
   std::string strQuery = inb->contents;
   cerr << "incoming request: " << strQuery << "\n";
 
-  bool isSuccess = dataAccess.ExecuteQuery(strQuery);
-  if (isSuccess) {
-    MYSQL_RES *sqlResult = dataAccess.getSqlResult();
+  std::string delim = " ";
+  size_t start = 0;
+  size_t end = strQuery.find(delim);
+  std::vector<std::string> ops;
+  while (end != std::string::npos) {
+    ops.push_back(strQuery.substr(start, end - start));
+    start = end + delim.length();
+    end = strQuery.find(delim, start);
+  }
+  ops.push_back(strQuery.substr(start, end - start));
+  std::ostringstream sqlStream;
+  std::string sql;
+  std::string client_name;
+  bool isRead = false;
 
-    //output the table field
-    MYSQL_FIELD *pSQLField = NULL;
-    while (NULL != (pSQLField = mysql_fetch_field(sqlResult))) {
-      cerr << pSQLField->name << "\t";
+  if (ops[0] == "GET") {
+    client_name = ops[1];
+    sqlStream << "SELECT balance FROM account WHERE name='" << client_name << "'";
+    isRead = true;
+  } else if (ops[0] == "DEPOSIT") {
+    client_name = ops[3];
+    sqlStream << "UPDATE account set balance=balance+" << ops[1] << " WHERE name='" << client_name << "'";
+  } else if (ops[0] == "WITHDRAW") {
+    client_name = ops[3];
+    sqlStream << "UPDATE account set balance=balance-" << ops[1] << " WHERE name='" << client_name << "'";
+  } else {
+    cerr << "Wrong request.\n";
+    return 0;
+  }
+  sql = sqlStream.str();
+  cerr << "sql: " << sql << "\n";
+
+  bool isSuccess = dataAccess.ExecuteQuery(sql);
+
+  if (isSuccess) {
+    cerr << "execute success\n";
+    if (!isRead) {
+      dataAccess.releaseResult();
+      sqlStream.str("");
+      sqlStream << "SELECT balance FROM account WHERE name='" << client_name << "'";
+      sql = sqlStream.str();
+      dataAccess.ExecuteQuery(sql);
     }
-    cerr << "\n";
+
+    std::ostringstream resStream;
+
+    MYSQL_RES *sqlResult = dataAccess.getSqlResult();
+//    //output the table field
+//    MYSQL_FIELD *pSQLField = NULL;
+//    while (NULL != (pSQLField = mysql_fetch_field(sqlResult))) {
+//      cerr << pSQLField->name << "\t";
+//    }
+//    cerr << "\n";
 
     //output each row of the table
+//    MYSQL_ROW pSQLRow = NULL;
+//    while (pSQLRow = mysql_fetch_row(sqlResult)) {
+//      //loop to read each line
+//      int numCol = mysql_num_fields(sqlResult);
+//      for (int i = 0; i < numCol; i++) {
+//        std::string strFieldValue = pSQLRow[i];
+//        cerr << strFieldValue.c_str() << "\t";
+//      }
+//      cerr << "\n";
+//    }
+
     MYSQL_ROW pSQLRow = NULL;
     while (pSQLRow = mysql_fetch_row(sqlResult)) {
       //loop to read each line
@@ -53,12 +111,18 @@ int exec_command(Byz_req *inb, Byz_rep *outb, Byz_buffer *non_det, int client, b
       for (int i = 0; i < numCol; i++) {
         std::string strFieldValue = pSQLRow[i];
         cerr << strFieldValue.c_str() << "\t";
+        resStream << strFieldValue.c_str() << "\t";
       }
       cerr << "\n";
+      resStream << "\n";
     }
 
     dataAccess.releaseResult();
+    std::string res = resStream.str();
+    strcpy(outb->contents, res.c_str());
+    outb->size = res.size();
   }
+  return 0;
 
 //  if(exec_count++ == max_exec_count) {
 //    cerr << "starting timing at " << max_exec_count << " ops\n";
@@ -70,26 +134,25 @@ int exec_command(Byz_req *inb, Byz_rep *outb, Byz_buffer *non_det, int client, b
 //    dump_profile(0);
 //  }
 
-#ifdef RETS_GRAPH
-  int size = *((int*)(inb->contents));
-  bzero(outb->contents, size);
-  outb->size = size;    
-  return 0;
-#else
-  // A simple service.
-  if (inb->contents[0] == 1) {
-    th_assert(inb->size == 8, "Invalid request");
-    bzero(outb->contents, Simple_size);
-    outb->size = Simple_size;
-    return 0;
-  }
-
-  th_assert((inb->contents[0] == 2 && inb->size == Simple_size) ||
-            (inb->contents[0] == 0 && inb->size == 8), "Invalid request");
-  *((long long*)(outb->contents)) = 0;
-  outb->size = 8;
-  return 0;
-#endif
+//#ifdef RETS_GRAPH
+//  int size = *((int*)(inb->contents));
+//  bzero(outb->contents, size);
+//  outb->size = size;
+//  return 0;
+//#else
+//  // A simple service.
+//  if (inb->contents[0] == 1) {
+//    th_assert(inb->size == 8, "Invalid request");
+//    bzero(outb->contents, Simple_size);
+//    outb->size = Simple_size;
+//    return 0;
+//  }
+//
+//  th_assert((inb->contents[0] == 2 && inb->size == Simple_size) ||
+//            (inb->contents[0] == 0 && inb->size == 8), "Invalid request");
+//  *((long long*)(outb->contents)) = 0;
+//  return 0;
+//#endif
 }
 
 int main(int argc, char **argv) {
@@ -103,15 +166,15 @@ int main(int argc, char **argv) {
     switch (opt) {
       case 'c':
         strncpy(config, optarg, PATH_MAX);
-            break;
+        break;
 
       case 'p':
         strncpy(config_priv, optarg, PATH_MAX);
-            break;
+        break;
 
       default:
         fprintf(stderr, "%s -c config_file -p config_priv_file", argv[0]);
-            exit(-1);
+        exit(-1);
     }
   }
 
